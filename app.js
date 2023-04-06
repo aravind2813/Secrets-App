@@ -61,7 +61,7 @@ passport.use(new GoogleStrategy({
     passReqToCallback   : true,
     userProfileUrl :"https://www.googleapis.com//auth/google/callback"
   },
-  function(accessToken, refreshToken, profile, cb) {
+  function(req,accessToken, refreshToken, profile, cb) {
     console.log(profile);
     userModel.findOrCreate({ googleId: profile.id }, function (err, user) {
       return cb(err, user);
