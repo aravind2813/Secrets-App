@@ -77,9 +77,9 @@ passport.use(new GoogleStrategy({
 //       // Successful authentication, redirect home.
 //       res.redirect('/secrets');
 //     });
-router.get('/login/federated/google', passport.authenticate('google'));
+app.get('/login/federated/google', passport.authenticate('google'));
 
-router.get('/oauth2/redirect/google', passport.authenticate('google', {
+app.get('/oauth2/redirect/google', passport.authenticate('google', {
   successReturnToOrRedirect: '/secrets',
   failureRedirect: '/login'
 }));
