@@ -62,7 +62,7 @@ passport.use(new GoogleStrategy({
     userProfileUrl :"https://www.googleapis.com//auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    userModel.findOrCreate({ googleId: profile.id }, function (err, user) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
       return cb(err, user);
     });
   }
