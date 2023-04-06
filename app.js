@@ -59,7 +59,7 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: "/oauth2/redirect/google",
     passReqToCallback   : true,
-    userProfileUrl :"https://www.googleapis.com/oauth2/v3/userinfo"
+    userProfileUrl :"https://www.googleapis.com//auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
     userModel.findOrCreate({ googleId: profile.id }, function (err, user) {
@@ -77,12 +77,22 @@ passport.use(new GoogleStrategy({
 //       // Successful authentication, redirect home.
 //       res.redirect('/secrets');
 //     });
-app.get('/login/federated/google', passport.authenticate('google'));
+// app.get('/login/federated/google', passport.authenticate('google'));
+//
+// app.get('/oauth2/redirect/google', passport.authenticate('google', {
+//   successReturnToOrRedirect: '/secrets',
+//   failureRedirect: '/login'
+// }));
+app.get('/auth/google',
+     passport.authenticate('google', {scope: ['profile', 'email']})
+ );
 
-app.get('/oauth2/redirect/google', passport.authenticate('google', {
-  successReturnToOrRedirect: '/secrets',
-  failureRedirect: '/login'
-}));
+ app.get('/auth/google/callback',
+     passport.authenticate('google', {
+         successRedirect: '/secrets',
+         failureRedirect: '/login'
+     })
+ );
 
 app.get("/",function(req,res){
   res.render("home");
