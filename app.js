@@ -81,18 +81,18 @@ passport.use(new GoogleStrategy({
 //
 // app.get('/oauth2/redirect/google', passport.authenticate('google', {
 //   successReturnToOrRedirect: '/secrets',
-//   failureRedirect: '/login'
+//   failureRedirect: '/l     ogin'
 // }));
 app.get('/auth/google',
      passport.authenticate('google', {scope: ['profile', 'email']})
  );
 
  app.get('/auth/google/callback',
-     passport.authenticate('google', {
-         successRedirect: '/secrets',
-         failureRedirect: '/login'
-     })
- );
+   passport.authenticate('google', { failureRedirect: '/login' }),
+   function(req, res) {
+     // Successful authentication, redirect success.
+     res.redirect('/secrets');
+   });
 
 app.get("/",function(req,res){
   res.render("home");
