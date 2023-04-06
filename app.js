@@ -57,7 +57,7 @@ passport.deserializeUser(function(user, cb) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "https://anonymous-secrets.onrender.com/oauth2/redirect/google",
+    callbackURL: "/oauth2/redirect/google",
     passReqToCallback   : true,
     userProfileUrl :"https://www.googleapis.com/oauth2/v3/userinfo"
   },
@@ -68,15 +68,21 @@ passport.use(new GoogleStrategy({
   }
 ));
 
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }));
+// app.get('/auth/google',
+//   passport.authenticate('google', { scope: ['profile'] }));
+//
+// app.get('/auth/google/secrets',
+//     passport.authenticate('google', { failureRedirect: '/login' }),
+//     function(req, res) {
+//       // Successful authentication, redirect home.
+//       res.redirect('/secrets');
+//     });
+router.get('/login/federated/google', passport.authenticate('google'));
 
-app.get('/auth/google/secrets',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    function(req, res) {
-      // Successful authentication, redirect home.
-      res.redirect('/secrets');
-    });
+router.get('/oauth2/redirect/google', passport.authenticate('google', {
+  successReturnToOrRedirect: '/secrets',
+  failureRedirect: '/login'
+}));
 
 app.get("/",function(req,res){
   res.render("home");
