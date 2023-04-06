@@ -38,7 +38,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
-// userSchema.plugin(encrypt,{secret:process.env.SECRET,encryptedFields: ["password"]});
 
 const userModel = mongoose.model("User",userSchema);
 
@@ -58,7 +57,7 @@ passport.deserializeUser(function(user, cb) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/secrets"
+    callbackURL: "https://anonymous-secrets.onrender.com/auth/google/secrets"
   },
   function(accessToken, refreshToken, profile, cb) {
     userModel.findOrCreate({ googleId: profile.id }, function (err, user) {
