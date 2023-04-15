@@ -96,6 +96,6 @@ margin-left: 45%
 
 @media (max-width:600px){
   .item{
-    max-width:20%;
+    max-width:100%;
   }
 }
